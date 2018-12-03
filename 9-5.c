@@ -9,7 +9,7 @@ void radix_sort(struct point a[], int n, int r, int dmax){
 	for(i=0;i<r;i++) c_size *= 2;
 	int c[c_size];
 
-	/*nの2^r進法での下からrビットを1桁と見たときの、d桁目ごとにバケツソートの処理をする*/
+	/*nの2^r進法でのrビットを1桁と見たときの、下からd桁目ごとにバケツソートの処理をする*/
 	for(d=0;d<dmax;d++){
 
 		/*各ループごとにカウンタ配列を0に初期化*/
