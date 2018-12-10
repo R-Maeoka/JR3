@@ -1,9 +1,11 @@
 #include <stdio.h>
 
+int count = 0;
 char kijun;
 struct point { int x, y; };
 
 int compare(struct point p1, struct point p2){
+	count++;
 	if(kijun=='X'){
 		if(p1.x==p2.x){
 			if(p1.y==p2.y) return 0;
@@ -32,17 +34,28 @@ int compare(struct point p1, struct point p2){
 	}	
 }
 
-int is_heap(struct point a[], int n){
-	int i, result = 1;
-	for(i=0;i<n;i++){
-		if(2*i+1<n){
-			if(compare(a[i],a[2*i+1])<0) result = 0;
+void pushdown(struct point a[], int m, int n){
+	int i;
+	if(2*m+2 <= n){
+		switch(compare(a[2*m+1],a[2*m+2])){
+			case 1:
+				i = 2*m+1; break;
+			default:
+				i = 2*m+2; break;
 		}
-		if(2*i+2<n){
-			if(compare(a[i],a[2*i+1])<0) result = 0;
+		if(compare(a[i],a[m])>0){
+			struct point tmp = a[i];
+			a[i] = a[m];
+			a[m] = tmp;
+			pushdown(a, i, n);
+		}
+	}else if(2*m+1 == n){
+		if(compare(a[2*m+1],a[m])>0){
+			struct point tmp = a[2*m+1];
+			a[2*m+1] = a[m];
+			a[m] = tmp;
 		}
 	}
-	return result;
 }
 
 int main(){
@@ -56,7 +69,9 @@ int main(){
 		++i;
 	}
 	n = i;
-	if(is_heap(arr,n)) printf("Yes.\n");
-	else printf("No.\n");
+	pushdown(arr, 0, n-1);
+	printf("%d\n",count);
+	for(i=0;i<n;++i)
+		printf("%d %d\n", arr[i].x, arr[i].y);
 	return 0;
 }
