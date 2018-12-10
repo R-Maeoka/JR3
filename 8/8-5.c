@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 char kijun;
 
@@ -34,11 +36,16 @@ int compare(struct point p1, struct point p2){
 }
 
 int partition(struct point a[], int m, int n){
-	struct point pivot = a[m];
-	int l = m+1, r = n;
+
+	//ピボットを乱数で選択
+	srand((unsigned)time(NULL));
+	int rand_p = rand()%(n-m+1)+m;
+	struct point pivot = a[rand_p];
+
+	int l = m, r = n;
 	while(1){
-		while(l < n && compare(a[l], pivot)==-1) l++;
-		while(m < r && compare(a[r], pivot)==1) r--;
+		while(l < n && compare(a[l], pivot)<=0) l++;
+		while(m < r && compare(a[r], pivot)>=0) r--;
 		if(l < r){
 			struct point tmp = a[l];
 			a[l] = a[r];
@@ -46,8 +53,23 @@ int partition(struct point a[], int m, int n){
 		}else break;
 		l++; r--;
 	}
-	a[m] = a[r]; a[r] = pivot;
-	return r;
+
+	/*問題2のようにピボットが左端に固定されていないので、lとrの値に応じて入れ替える値を変えなければならない*/
+	if(l > rand_p && r > rand_p){
+		a[rand_p] = a[r]; a[r] = pivot;
+		return r;
+	}else if(r < rand_p && l < rand_p){
+		a[rand_p] = a[l]; a[l] = pivot;
+		return l;
+	}else return rand_p;
+}
+
+void quicksort(struct point a[], int m, int n){
+	if(m < n){
+		int p = partition(a, m, n);
+		quicksort(a, m, p-1);
+		quicksort(a, p+1, n);
+	}
 }
 
 int main(){
@@ -61,7 +83,7 @@ int main(){
 		++i;
 	}
 	n = i;
-	printf("%d\n", partition(arr, 0, n-1));
+	quicksort(arr, 0, n-1);
 	for(i=0;i<n;i++)
 		printf("%d %d\n", arr[i].x, arr[i].y);
 	return 0;

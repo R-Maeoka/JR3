@@ -1,10 +1,12 @@
 #include <stdio.h>
 
+int count = 0;
 char kijun;
 
 struct point { int x, y; };
 
 int compare(struct point p1, struct point p2){
+	++count;
 	if(kijun=='X'){
 		if(p1.x==p2.x){
 			if(p1.y==p2.y) return 0;
@@ -50,6 +52,14 @@ int partition(struct point a[], int m, int n){
 	return r;
 }
 
+void quicksort(struct point a[], int m, int n){
+	if(m < n){
+		int p = partition(a, m, n);
+		quicksort(a, m, p-1);
+		quicksort(a, p+1, n);
+	}
+}
+
 int main(){
 	char buf[128];
 	struct point p, arr[128];
@@ -61,7 +71,8 @@ int main(){
 		++i;
 	}
 	n = i;
-	printf("%d\n", partition(arr, 0, n-1));
+	quicksort(arr, 0, n-1);
+	printf("%d\n", count);
 	for(i=0;i<n;i++)
 		printf("%d %d\n", arr[i].x, arr[i].y);
 	return 0;
