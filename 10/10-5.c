@@ -9,7 +9,7 @@ struct node { struct student data; struct node *next; };
 
 int hash(char *s){
 	int i;
-	int sum_mod = (int)*s%128;
+	int sum_mod = (int)*s%SIZE;
 	for(i=1;*(s+i)!='\0';i++){
 		sum_mod = ((sum_mod%SIZE) * 128 + (int)*(s+i))%SIZE;
 	}
