@@ -5,7 +5,7 @@ int hash(char *s){
 	int i;
 
 	/*和の数列の初項を定義*/
-	int sum_mod = (int)*s%128;
+	int sum_mod = (int)*s%SIZE;
 
 	/*変数iでポインタを進める*/
 	for(i=1;*(s+i)!='\0';i++){
