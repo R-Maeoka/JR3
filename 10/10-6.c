@@ -51,8 +51,8 @@ void update_score(struct node *table[], struct student st){
 }
 
 int main(){
-	int i, v;
-	char buf[128], name[32];
+	int i;
+	char buf[128];
 	struct student st;
 	struct node *table[SIZE], *p;
 
